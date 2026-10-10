@@ -623,29 +623,15 @@
       <img src="images/icon_down.png" alt="Dislike">
       <span class="count" id="countDown">2</span>
     </div>
-    <div class="reaction-btn claim-btn" data-index="6" data-action="claim">
+    <div class="reaction-btn claim-btn" data-index="6" data-action="dispute">
       <span>&#9888;&#65039;</span>
-      <span>File Claim</span>
-    </div>
-    <div class="reaction-btn report-btn" data-index="7" data-action="report">
-      <span>🚩</span>
-      <span>Report Abuse</span>
+      <span>Dispute / Report</span>
     </div>
   </div>
 
   <!-- BOTTOM PLAYBACK PROGRESS BAR -->
   <div class="progress-bar-container">
     <div class="progress-bar-fill verified" id="progressBar"></div>
-  </div>
-
-  <!-- QR DISPUTE MODAL (File Claim) -->
-  <div class="modal-overlay" id="qrModal">
-    <div class="qr-card">
-      <h2 class="qr-title">File a Community Dispute</h2>
-      <p class="qr-desc">Scan with your phone to submit evidence, dispute this claim, or review the verification audit log.</p>
-      <img id="qrImageDispute" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=https%3A%2F%2Fannotated-repo.vercel.app%2Fn%2Fannotation-d31852c7" alt="QR Code">
-      <div class="qr-hint">Press <strong>OK</strong> or <strong>Back</strong> on your remote to close</div>
-    </div>
   </div>
 
   <!-- ANNOTATE MODAL (Scan to Annotate Live) -->
@@ -658,28 +644,70 @@
     </div>
   </div>
 
-  <!-- REPORT ABUSE MODAL -->
-  <div class="modal-overlay" id="reportModal">
-    <div class="qr-card" style="border: 2px solid #EF4444; box-shadow: 0 20px 60px rgba(239, 68, 68, 0.4);">
-      <h2 class="qr-title" style="color: #EF4444;">🚩 Report Objectionable Content</h2>
-      <p class="qr-desc">Scan to submit a detailed report on your phone, or press <strong>OK</strong> on your remote to instantly flag and hide this item on this TV.</p>
-      <img id="qrImageReport" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=https%3A%2F%2Fannotated-repo.vercel.app%2Fapi%2Freport" alt="QR Code">
-      <div style="margin-top: 14px; width: 100%;">
-        <div id="reportConfirmBtn" style="background: rgba(239, 68, 68, 0.25); border: 2px solid #EF4444; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 1.05rem; color: #FFF; text-align: center; cursor: pointer;">
-          Press <strong>OK / Select</strong> to Flag &amp; Hide Now
+  <!-- UNIFIED DISPUTE / REPORT MODAL -->
+  <div class="modal-overlay" id="disputeModal">
+    <div class="qr-card" style="max-width: 840px; width: 88vw; border: 2px solid #EF4444; box-shadow: 0 25px 70px rgba(239, 68, 68, 0.45); padding: 28px 32px;">
+      <h2 class="qr-title" style="color: #F8FAFC; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 6px;">
+        <span>&#9888;&#65039;</span> <span>Dispute, Claim, or Report</span>
+      </h2>
+      <p class="qr-desc" style="margin-bottom: 20px;">
+        Use remote (▲ / ▼) to select an action, or scan the QR code with your smartphone:
+      </p>
+
+      <div style="display: flex; gap: 24px; align-items: stretch; text-align: left;">
+        <!-- Left: 3 Selectable Category Options -->
+        <div style="flex: 1.25; display: flex; flex-direction: column; gap: 10px;" id="modalOptionsList">
+          <!-- Option 0: Report Inappropriate Content -->
+          <div class="modal-opt-card active" data-opt="0" id="modalOpt0" style="padding: 12px 16px; border-radius: 14px; border: 2px solid #EF4444; background: rgba(239, 68, 68, 0.25); cursor: pointer; transition: all 0.15s ease;">
+            <div style="font-weight: 800; font-size: 1.05rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <span>🚩</span> <span>Report Abuse &amp; Hide</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #E2E8F0; margin-top: 3px; line-height: 1.3;">
+              Press <strong>OK</strong> to immediately flag &amp; hide this content from your TV.
+            </div>
+          </div>
+
+          <!-- Option 1: Community Fact Dispute -->
+          <div class="modal-opt-card" data-opt="1" id="modalOpt1" style="padding: 12px 16px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.12); background: rgba(30, 41, 59, 0.6); cursor: pointer; transition: all 0.15s ease;">
+            <div style="font-weight: 800; font-size: 1.05rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <span>⚖️</span> <span>Fact Dispute &amp; Evidence</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 3px; line-height: 1.3;">
+              Challenge accuracy, provide sources, or view community consensus.
+            </div>
+          </div>
+
+          <!-- Option 2: DMCA / Copyright -->
+          <div class="modal-opt-card" data-opt="2" id="modalOpt2" style="padding: 12px 16px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.12); background: rgba(30, 41, 59, 0.6); cursor: pointer; transition: all 0.15s ease;">
+            <div style="font-weight: 800; font-size: 1.05rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <span>📄</span> <span>Copyright / DMCA Claim</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 3px; line-height: 1.3;">
+              File a copyright notice or fair-use inquiry with our moderation team.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Dynamic QR Code Box -->
+        <div style="flex: 0.85; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.7); border-radius: 16px; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          <img id="qrImageDisputeDynamic" src="" alt="QR Code" style="width: 175px; height: 175px; margin: 0 auto 8px auto; border-radius: 10px; background: #FFF; padding: 6px; display: block;">
+          <div id="modalQrLabel" style="font-size: 0.8rem; font-weight: 700; color: #EF4444;">Scan to report on phone</div>
         </div>
       </div>
-      <div class="qr-hint" style="margin-top: 10px;">Press <strong>Back</strong> on your remote to cancel</div>
+
+      <div class="qr-hint" style="margin-top: 16px;">
+        Use <strong>▲ / ▼</strong> to switch &middot; Press <strong>OK</strong> to take action &middot; Press <strong>Back</strong> to exit
+      </div>
     </div>
   </div>
 
   <script>
     let focusedIndex = 0;
-    const totalButtons = 8;
+    const totalButtons = 7;
     const buttons = document.querySelectorAll('.reaction-btn');
-    const qrModal = document.getElementById('qrModal');
     const annotateModal = document.getElementById('annotateModal');
-    const reportModal = document.getElementById('reportModal');
+    const disputeModal = document.getElementById('disputeModal');
+    let modalOptionIndex = 0; // 0 = Report Abuse & Hide, 1 = Fact Dispute, 2 = DMCA
     const video = document.getElementById('tvVideo');
     const videoSource = document.getElementById('videoSource');
     const stampFalse = document.getElementById('stampFalse');
@@ -1069,13 +1097,10 @@
 
       // Update QR Codes
       const passUrl = item.pass_url || 'https://annotated-repo.vercel.app';
-      const disputeQR = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=${encodeURIComponent(passUrl)}`;
-      document.getElementById('qrImageDispute').src = disputeQR;
       const annotateQR = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=${encodeURIComponent(passUrl + '?action=annotate')}`;
-      document.getElementById('qrImageAnnotate').src = annotateQR;
-      const reportQR = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=${encodeURIComponent(passUrl + '?action=report')}`;
-      const reportImg = document.getElementById('qrImageReport');
-      if (reportImg) reportImg.src = reportQR;
+      const annImg = document.getElementById('qrImageAnnotate');
+      if (annImg) annImg.src = annotateQR;
+      updateModalOptionFocus();
 
       // Update Mini Bottom Right QR Card (Crisp & slightly enlarged)
       const miniQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=4&data=${encodeURIComponent(passUrl)}`;
@@ -1095,9 +1120,8 @@
     }
 
     function closeModals() {
-      qrModal.classList.remove('open');
       annotateModal.classList.remove('open');
-      reportModal.classList.remove('open');
+      disputeModal.classList.remove('open');
     }
 
     function showToast(msg) {
@@ -1110,6 +1134,64 @@
         toast.classList.remove('show');
       }, 2200);
     }
+
+    function updateModalOptionFocus() {
+      const opt0 = document.getElementById('modalOpt0');
+      const opt1 = document.getElementById('modalOpt1');
+      const opt2 = document.getElementById('modalOpt2');
+      const qrImg = document.getElementById('qrImageDisputeDynamic');
+      const qrLabel = document.getElementById('modalQrLabel');
+      const item = feedItems[currentItemIndex];
+      const passUrl = (item && item.pass_url) || 'https://annotated-repo.vercel.app';
+
+      [opt0, opt1, opt2].forEach((el, i) => {
+        if (!el) return;
+        if (i === modalOptionIndex) {
+          el.classList.add('active');
+          if (i === 0) {
+            el.style.borderColor = '#EF4444';
+            el.style.background = 'rgba(239, 68, 68, 0.35)';
+            el.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.6)';
+          } else {
+            el.style.borderColor = '#38BDF8';
+            el.style.background = 'rgba(56, 189, 248, 0.25)';
+            el.style.boxShadow = '0 0 20px rgba(56, 189, 248, 0.5)';
+          }
+        } else {
+          el.classList.remove('active');
+          el.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+          el.style.background = 'rgba(30, 41, 59, 0.6)';
+          el.style.boxShadow = 'none';
+        }
+      });
+
+      if (qrImg && qrLabel) {
+        if (modalOptionIndex === 0) {
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=6&data=${encodeURIComponent(passUrl + '?action=report')}`;
+          qrLabel.textContent = 'Scan to file report on phone';
+          qrLabel.style.color = '#EF4444';
+        } else if (modalOptionIndex === 1) {
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=6&data=${encodeURIComponent(passUrl + '?action=dispute')}`;
+          qrLabel.textContent = 'Scan to submit counter-evidence';
+          qrLabel.style.color = '#38BDF8';
+        } else {
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=6&data=${encodeURIComponent('https://annotated-repo.vercel.app/dmca')}`;
+          qrLabel.textContent = 'Scan to open DMCA claim form';
+          qrLabel.style.color = '#F59E0B';
+        }
+      }
+    }
+
+    ['modalOpt0', 'modalOpt1', 'modalOpt2'].forEach((id, idx) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', () => {
+          modalOptionIndex = idx;
+          updateModalOptionFocus();
+          if (idx === 0) submitReportOnTv();
+        });
+      }
+    });
 
     function submitReportOnTv() {
       const item = feedItems[currentItemIndex];
@@ -1146,27 +1228,16 @@
       }, 400);
     }
 
-    const reportConfirmBtn = document.getElementById('reportConfirmBtn');
-    if (reportConfirmBtn) {
-      reportConfirmBtn.addEventListener('click', submitReportOnTv);
-    }
-
     function handleAction(index) {
-      if (index === 7) {
-        // Report Abuse
-        if (reportModal.classList.contains('open')) {
+      if (index === 6) {
+        // Dispute / Report
+        if (disputeModal.classList.contains('open')) {
           closeModals();
         } else {
           closeModals();
-          reportModal.classList.add('open');
-        }
-      } else if (index === 6) {
-        // File Claim
-        if (qrModal.classList.contains('open')) {
-          closeModals();
-        } else {
-          closeModals();
-          qrModal.classList.add('open');
+          modalOptionIndex = 0;
+          disputeModal.classList.add('open');
+          updateModalOptionFocus();
         }
       } else if (index === 0) {
         // Annotate
@@ -1208,7 +1279,7 @@
     }
 
     window.handleTvBack = function() {
-      if (qrModal.classList.contains('open') || annotateModal.classList.contains('open') || reportModal.classList.contains('open')) {
+      if (annotateModal.classList.contains('open') || disputeModal.classList.contains('open')) {
         closeModals();
       } else if (window.AndroidBridge && window.AndroidBridge.exitApp) {
         window.AndroidBridge.exitApp();
@@ -1216,6 +1287,30 @@
     };
 
     window.handleTvKey = function(key) {
+      if (disputeModal.classList.contains('open')) {
+        if (key === 'ArrowUp') {
+          modalOptionIndex = (modalOptionIndex - 1 + 3) % 3;
+          updateModalOptionFocus();
+          return;
+        } else if (key === 'ArrowDown') {
+          modalOptionIndex = (modalOptionIndex + 1) % 3;
+          updateModalOptionFocus();
+          return;
+        } else if (key === 'Enter') {
+          if (modalOptionIndex === 0) {
+            submitReportOnTv();
+          } else if (modalOptionIndex === 1) {
+            showToast("📱 Scan QR with phone to submit evidence");
+          } else if (modalOptionIndex === 2) {
+            showToast("📱 Scan QR with phone to file DMCA claim");
+          }
+          return;
+        } else if (key === 'Back' || key === 'Escape') {
+          closeModals();
+          return;
+        }
+      }
+
       if (key === 'ArrowLeft') {
         closeModals();
         focusedIndex = (focusedIndex - 1 + totalButtons) % totalButtons;
@@ -1235,15 +1330,13 @@
         const prevIdx = (currentItemIndex - 1 + feedItems.length) % feedItems.length;
         renderItem(prevIdx);
       } else if (key === 'Enter') {
-        if (reportModal.classList.contains('open')) {
-          submitReportOnTv();
-        } else if (qrModal.classList.contains('open') || annotateModal.classList.contains('open')) {
+        if (annotateModal.classList.contains('open')) {
           closeModals();
         } else {
           handleAction(focusedIndex);
         }
       } else if (key === 'Back' || key === 'Escape') {
-        if (qrModal.classList.contains('open') || annotateModal.classList.contains('open') || reportModal.classList.contains('open')) {
+        if (annotateModal.classList.contains('open') || disputeModal.classList.contains('open')) {
           closeModals();
         }
       }
@@ -1297,8 +1390,11 @@
     const initialIdx = parseInt(urlParams.get('item') || '0', 10);
     const modalParam = urlParams.get('modal');
     if (modalParam === 'annotate') annotateModal.classList.add('open');
-    if (modalParam === 'claim') qrModal.classList.add('open');
-    if (modalParam === 'report') reportModal.classList.add('open');
+    if (modalParam === 'claim' || modalParam === 'dispute' || modalParam === 'report') {
+      modalOptionIndex = (modalParam === 'claim' || modalParam === 'dispute') ? 1 : 0;
+      disputeModal.classList.add('open');
+      updateModalOptionFocus();
+    }
     renderItem(initialIdx);
     if (!urlParams.has('item')) {
       fetchLiveFeed();
