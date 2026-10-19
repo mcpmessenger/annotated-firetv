@@ -7,6 +7,12 @@
 [![Platform](https://img.shields.io/badge/Platform-FireOS%20%7C%20Android%20TV-3DDC84?style=for-the-badge&logo=android)](https://developer.amazon.com/fire-tv)
 [![Hackathon](https://img.shields.io/badge/Amazon_Developer_Hackathon-2026-6366F1?style=for-the-badge)](https://developer.amazon.com)
 
+## Demo
+
+Watch it running on real Fire TV hardware: https://youtu.be/4vB4qotGvbs
+
+**Live on the Amazon Appstore** — v1.0.1 passed all three Appstore validations (Primary, Content Policy, Functionality).
+
 ---
 
 ## 📺 Overview
