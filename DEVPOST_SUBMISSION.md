@@ -5,6 +5,9 @@
 **Track:** Amazon Fire OS / Fire TV Track  
 **Priority Categories Addressed:** Family Entertainment · AI-Enhanced Viewing · Multi-Modal UX  
 **GitHub Repository:** [mcpmessenger/annotated-firetv](https://github.com/mcpmessenger/annotated-firetv) (MIT License, Public)  
+**GitHub Release (APK):** [v1.0.1 Release](https://github.com/mcpmessenger/annotated-firetv/releases/tag/v1.0.1)  
+**Demo Video:** [https://youtu.be/4vB4qotGvbs](https://youtu.be/4vB4qotGvbs)  
+**Amazon Appstore Status:** Live (`v1.0.1` — Passed Primary, Content Policy, and Functionality validations)  
 **Package:** `com.annotated.app`  
 **Target Hardware:** Amazon Fire TV Stick 4K Max 2nd Gen (Fire OS 8 / Android 11)
 
